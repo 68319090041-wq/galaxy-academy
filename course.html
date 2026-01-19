@@ -5,6 +5,36 @@
     <title>Galaxy Academy - บทเรียนของฉัน</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:wght@200;400&display=swap" rel="stylesheet">
     <style>
+        /* --- ส่วนตกแต่งพื้นหลัง --- */
+.course-deco-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; /* เพื่อให้กดปุ่มเมนูได้ปกติ */
+    z-index: 0; 
+}
+
+.shimmer {
+    position: absolute;
+    width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.2;
+}
+
+.cartoon-pilot {
+    position: absolute;
+    bottom: 30px; /* ระยะห่างจากขอบล่าง */
+    left: 50px;   /* ระยะห่างจากขอบซ้าย */
+    width: 130px; /* *** ขนาดที่พอดี ไม่ใหญ่เกินไป *** */
+    opacity: 0.7; /* ความจางของรูป (0.1 - 1.0) */
+    animation: floatMove 4s ease-in-out infinite;
+}
+
+@keyframes floatMove {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-20px) rotate(3deg); }
+}
+
         :root { --primary: #7b2ff7; --secondary: #00d4ff; --bg: #02010a; }
         body { margin: 0; font-family: 'Kanit', sans-serif; background: var(--bg); color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         header { padding: 15px 30px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
@@ -22,13 +52,59 @@
         .lesson-item { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; }
         .lesson-item:hover { background: rgba(123, 47, 247, 0.1); }
         .lesson-item.active { background: rgba(123, 47, 247, 0.2); border-left: 6px solid var(--secondary); }
+            
+        /* สร้างเลเยอร์จุดขาวระยิบระยับ */
+.star-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    /* ใช้ภาพจุดเล็กๆ กระจายตัว */
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
+    background-size: 200px 200px; /* ทำให้จุดกระจายซ้ำๆ ทั่วจอ */
+    animation: twinkle-effect 4s ease-in-out infinite;
+    opacity: 0.5;
+}
+
+/* แอนิเมชันทำให้มัน กะพริบ (วิ้งๆ) */
+@keyframes twinkle-effect {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* เพิ่มเติม: ปรับ shimmer เดิมให้ดูเนียนขึ้น */
+.shimmer {
+    position: absolute;
+    width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.15;
+    animation: pulse 5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.3; }
+}
+        
     </style>
 </head>
 <body>
+    <div class="course-deco-layer">
+    <div class="shimmer"></div>
+    <img src="https://img.freepik.com/free-vector/cute-astronaut-flying-with-rocket-cartoon-vector-icon-illustration_138676-2423.jpg" class="cartoon-pilot">
+</div>
+    <div class="course-deco-layer">
+    <div class="shimmer"></div>
+    <div class="star-layer"></div> <img src="https://img.freepik.com/free-vector/cute-astronaut-flying-with-rocket-cartoon-vector-icon-illustration_138676-2423.jpg" class="cartoon-pilot">
+</div>
 
     <header>
         <div class="logo">GALAXY ACADEMY</div>
         <div id="pName" style="font-family:'Orbitron'; color:var(--secondary);">PILOT: LOADING...</div>
+        
     </header>
 
     <main>
@@ -122,6 +198,7 @@
         }
 
         document.getElementById('pName').innerText = "PILOT: " + (localStorage.getItem('currentPilot') || "GUEST");
+        
     </script>
 </body>
 </html>
