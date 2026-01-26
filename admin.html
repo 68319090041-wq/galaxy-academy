@@ -45,12 +45,11 @@
             </table>
         </div>
         <div style="text-align: center; margin-top: 20px;">
-            <button class="btn" style="background:#444; color:white;" onclick="location.reload()">LOGOUT</button>
+            <button class="btn" style="background:#444; color:white;" onclick="window.location.href='index.html'">LOGOUT</button>
         </div>
     </div>
 
     <script>
-        // *** 1. อย่าลืมเปลี่ยนลิงก์ข้างล่างนี้ให้เป็น API ID ของคุณเอง ***
         const API_URL = 'https://sheetdb.io/api/v1/5grziblp6cmkh'; 
 
         function unlock() {
@@ -81,11 +80,9 @@
             } catch (e) { body.innerHTML = '<tr><td colspan="5">โหลดข้อมูลไม่สำเร็จ</td></tr>'; }
         }
 
-        // *** 2. ฟังก์ชันสั่งลบข้อมูล ***
         async function deletePilot(name) {
             if(confirm(`คุณแน่ใจนะว่าจะลบคุณ "${name}" ออกจากระบบและใน Google Sheet?`)) {
                 try {
-                    // สั่งลบแถวที่คอลัมน์ name ตรงกับชื่อที่เลือก
                     const res = await fetch(`${API_URL}/name/${encodeURIComponent(name)}`, {
                         method: 'DELETE'
                     });
@@ -93,7 +90,7 @@
                     
                     if(result.deleted) {
                         alert("ลบข้อมูลสำเร็จ!");
-                        loadData(); // โหลดตารางใหม่
+                        loadData(); 
                     }
                 } catch (e) {
                     alert("ลบไม่สำเร็จ กรุณาลองใหม่");
