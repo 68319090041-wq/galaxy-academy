@@ -2,202 +2,298 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>Galaxy Academy - บทเรียนของฉัน</title>
+    <title>Galaxy Academy - Mission Control</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:wght@200;400&display=swap" rel="stylesheet">
     <style>
-        /* --- ส่วนตกแต่งพื้นหลัง --- */
-.course-deco-layer {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; /* เพื่อให้กดปุ่มเมนูได้ปกติ */
-    z-index: 0; 
-}
-
-.shimmer {
-    position: absolute;
-    width: 100%; height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.2;
-}
-
-.cartoon-pilot {
-    position: absolute;
-    bottom: 30px; /* ระยะห่างจากขอบล่าง */
-    left: 50px;   /* ระยะห่างจากขอบซ้าย */
-    width: 130px; /* *** ขนาดที่พอดี ไม่ใหญ่เกินไป *** */
-    opacity: 0.7; /* ความจางของรูป (0.1 - 1.0) */
-    animation: floatMove 4s ease-in-out infinite;
-}
-
-@keyframes floatMove {
-    0%, 100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-20px) rotate(3deg); }
-}
-
         :root { --primary: #7b2ff7; --secondary: #00d4ff; --bg: #02010a; }
-        body { margin: 0; font-family: 'Kanit', sans-serif; background: var(--bg); color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        header { padding: 15px 30px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Orbitron'; font-weight: bold; font-size: 20px; color: var(--secondary); }
-        main { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; }
+
+        body { 
+            margin: 0; 
+            font-family: 'Kanit', sans-serif; 
+            background: var(--bg); 
+            color: white; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden;
+            cursor: crosshair; 
+        }
+
+        a, button, .lesson-item { cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="%2300d4ff" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="%237b2ff7"/></svg>') 12 12, pointer; }
+
+        /* --- 1. Background --- */
+        .course-deco-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: twinkle-effect 4s ease-in-out infinite; opacity: 0.5;
+        }
+        @keyframes twinkle-effect { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+        /* --- 2. Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0b15; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
+
+        /* --- 3. Animation Fade In --- */
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-content { animation: slideUp 0.6s ease-out; }
+
+        /* --- 4. Layout & Content --- */
+        .mission-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start; }
         
-        /* ฝั่งซ้าย: แสดงเนื้อหา */
+        .mission-desc ul { list-style: none; padding: 0; }
+        .mission-desc ul li { margin-bottom: 10px; padding-left: 25px; position: relative; color: #bbb; }
+        .mission-desc ul li::before { content: '►'; position: absolute; left: 0; color: var(--secondary); }
+
+        /* --- ฝั่งขวา (PILOT CARD + XP BAR) --- */
+        .pilot-card {
+            position: relative;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- แก้ไขส่วนเส้น Scan Line ให้เป็นสีขาวและอยู่ด้านบน --- */
+        .scan-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: rgba(255, 255, 255, 0.8); /* เปลี่ยนเป็นสีขาว */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* เงาสีขาว */
+            animation: scanMove 3s linear infinite; 
+            opacity: 0.8;
+            z-index: 5; /* สั่งให้ลอยอยู่เหนือรูปคน */
+            pointer-events: none; /* เพื่อไม่ให้บังการคลิก (เผื่อมีปุ่ม) */
+        }
+        @keyframes scanMove {
+            0% { top: -10%; opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        .pilot-icon { font-size: 60px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--primary)); animation: floatIcon 3s ease-in-out infinite; position: relative; z-index: 1; }
+        @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .pilot-label { font-size: 10px; color: var(--secondary); letter-spacing: 2px; margin-bottom: 5px; opacity: 0.7; }
+        .pilot-name-display { font-family: 'Orbitron'; font-size: 22px; font-weight: bold; color: white; text-shadow: 0 0 10px var(--primary); margin-bottom: 20px;}
+        
+        .xp-container { text-align: left; margin-top: 15px; }
+        .xp-label { font-size: 10px; color: #ddd; display: flex; justify-content: space-between; margin-bottom: 5px; font-family: 'Orbitron'; }
+        .xp-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+        .xp-fill {
+            height: 100%; width: 45%; 
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 10px var(--secondary);
+            animation: pulseBar 2s infinite alternate;
+        }
+        @keyframes pulseBar { from { opacity: 0.8; } to { opacity: 1; box-shadow: 0 0 15px var(--secondary); } }
+
+        /* --- Header & Layout --- */
+        header { padding: 15px 30px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .logo { font-family: 'Orbitron'; font-weight: bold; font-size: 20px; color: var(--secondary); letter-spacing: 2px; }
+        
+        main { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; z-index: 10; }
+        
         .content-panel { flex: 2.5; background: rgba(15, 15, 35, 0.9); border-radius: 20px; border: 1px solid var(--primary); padding: 35px; overflow-y: auto; }
-        h1 { color: var(--secondary); border-left: 5px solid var(--primary); padding-left: 15px; }
+        h1 { color: var(--secondary); border-left: 5px solid var(--primary); padding-left: 15px; transition: 0.3s; }
         .inner-content { line-height: 1.8; color: #ddd; font-size: 17px; }
 
-        /* ฝั่งขวา: ปุ่มกดเลือกบทเรียน */
         .sidebar { flex: 1; background: rgba(15, 15, 35, 0.95); border-radius: 20px; border: 1px solid #333; overflow-y: auto; }
-        .sidebar-header { padding: 20px; font-family: 'Orbitron'; color: var(--secondary); text-align: center; border-bottom: 1px solid var(--primary); }
-        .lesson-item { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; }
-        .lesson-item:hover { background: rgba(123, 47, 247, 0.1); }
+        .sidebar-header { padding: 20px; font-family: 'Orbitron'; color: var(--secondary); text-align: center; border-bottom: 1px solid var(--primary); letter-spacing: 2px; }
+        .lesson-item { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .lesson-item:hover { background: rgba(123, 47, 247, 0.1); color: var(--secondary); padding-left: 25px; } 
         .lesson-item.active { background: rgba(123, 47, 247, 0.2); border-left: 6px solid var(--secondary); }
-            
-        /* สร้างเลเยอร์จุดขาวระยิบระยับ */
-.star-layer {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    /* ใช้ภาพจุดเล็กๆ กระจายตัว */
-    background-image: 
-        radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
-    background-size: 200px 200px; /* ทำให้จุดกระจายซ้ำๆ ทั่วจอ */
-    animation: twinkle-effect 4s ease-in-out infinite;
-    opacity: 0.5;
-}
 
-/* แอนิเมชันทำให้มัน กะพริบ (วิ้งๆ) */
-@keyframes twinkle-effect {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.05); }
-}
+        .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff4444; color: #ff4444; padding: 5px 15px; border-radius: 5px; margin-left: 15px; font-family: 'Orbitron'; font-size: 12px; transition: 0.3s; }
+        .logout-btn:hover { background: #ff4444; color: white; box-shadow: 0 0 10px #ff4444; }
 
-/* เพิ่มเติม: ปรับ shimmer เดิมให้ดูเนียนขึ้น */
-.shimmer {
-    position: absolute;
-    width: 100%; height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.15;
-    animation: pulse 5s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.1; }
-    50% { opacity: 0.3; }
-}
-        
     </style>
 </head>
 <body>
-    <div class="course-deco-layer">
-    <div class="shimmer"></div>
-    <img src="https://img.freepik.com/free-vector/cute-astronaut-flying-with-rocket-cartoon-vector-icon-illustration_138676-2423.jpg" class="cartoon-pilot">
-</div>
-    <div class="course-deco-layer">
-    <div class="shimmer"></div>
-    <div class="star-layer"></div> <img src="https://img.freepik.com/free-vector/cute-astronaut-flying-with-rocket-cartoon-vector-icon-illustration_138676-2423.jpg" class="cartoon-pilot">
-</div>
+    
+    <div class="course-deco-layer"><div class="star-layer"></div></div>
 
     <header>
-        <div class="logo">GALAXY ACADEMY</div>
-        <div id="pName" style="font-family:'Orbitron'; color:var(--secondary);">PILOT: LOADING...</div>
-        
+        <div class="logo">🚀 GALAXY ACADEMY</div>
+        <div style="display: flex; align-items: center;">
+            <div id="pName" style="font-family:'Orbitron'; color:var(--secondary); font-size: 14px;">PILOT: LOADING...</div>
+            <button onclick="logout()" class="logout-btn">LOGOUT</button>
+        </div>
     </header>
 
     <main>
         <div class="content-panel">
-            <h1 id="mTitle">กรุณาเลือกบทเรียน</h1>
+            <h1 id="mTitle">ศูนย์บัญชาการ (Mission Control)</h1>
             <div id="mBody" class="inner-content">
-                🔥ชุดบทเรียนนี้ถูกออกแบบมาเพื่อสร้างทักษะพื้นฐานทางด้านคอมพิวเตอร์ที่จำเป็นในปัจจุบัน โดยครอบคลุมเนื้อหาตั้งแต่ระดับโครงสร้างระบบปฏิบัติการ การดูแลรักษาอุปกรณ์ ไปจนถึงการพัฒนาซอฟต์แวร์และการเชื่อมต่อเทคโนโลยีสมัยใหม่ โดยผู้เรียนจะได้รับความรู้ในหัวข้อดังต่อไปนี้:<br>
-                💡การติดตั้งระบบปฏิบัติการ (Windows 10): เรียนรู้ขั้นตอนการติดตั้งซอฟต์แวร์ระบบพื้นฐาน การตั้งค่าที่จำเป็นเพื่อให้คอมพิวเตอร์ทำงานได้อย่างมีประสิทธิภาพ<br>
-                💡การบำรุงรักษาคอมพิวเตอร์: ทราบถึงวิธีการดูแลรักษาทั้งฮาร์ดแวร์และซอฟต์แวร์อย่างถูกวิธี เพื่อลดความเสี่ยงจากการขัดข้องและยืดอายุการใช้งานของอุปกรณ์<br>
-                💡ตรรกะและการเขียนโปรแกรมเบื้องต้น: พัฒนาทักษะกระบวนการคิดอย่างเป็นระบบ (Algorithmic Thinking) ซึ่งเป็นหัวใจสำคัญในการแก้ปัญหาด้วยคอมพิวเตอร์<br>
-                💡โครงสร้างข้อมูลและตัวแปรในภาษา C++: เจาะลึกพื้นฐานการจัดการข้อมูลในระดับภาษาโปรแกรมมิ่ง เพื่อต่อยอดไปสู่การพัฒนาโปรแกรมที่มีความซับซ้อน<br>
-                💡ระบบอินเทอร์เน็ตในทุกสรรพสิ่ง (IoT): ศึกษาการทำงานของเทคโนโลยีที่เชื่อมโยงอุปกรณ์ต่างๆ เข้าด้วยกันผ่านเครือข่าย เพื่อให้ก้าวทันนวัตกรรมในยุคดิจิทัล<br>
-                💡กรุณาเลือกบทเรียนจากแถบเมนู "ภารกิจ" ด้านขวาเพื่อเข้าสู่เนื้อหา
-                
+                <div style="text-align:center; margin-top:50px;">
+                    <div style="font-size: 80px;">🪐</div>
+                    <h2 style="color:var(--secondary);">ยินดีต้อนรับเข้าสู่ระบบ</h2>
+                    <p>กรุณาเลือกภารกิจทางด้านขวามือเพื่อเริ่มการเรียนรู้</p>
+                    <p style="color:#666; font-size:14px;">waiting for command input...</p>
+                </div>
             </div>
         </div>
 
         <div class="sidebar">
-            <div class="sidebar-header">MISSIONS</div>
-            
-            <div class="lesson-item" onclick="updateContent(0)"><h4>ภารกิจที่ 1: (วิธีการลงWindows 10)</h4></div>
-            <div class="lesson-item" onclick="updateContent(1)"><h4>ภารกิจที่ 2: (การดูแลรักษาเครื่องคอม)</h4></div>
-            <div class="lesson-item" onclick="updateContent(2)"><h4>ภารกิจที่ 3: (การเขียนโปรแกรมเบื้องต้น)</h4></div>
-            <div class="lesson-item" onclick="updateContent(3)"><h4>ภารกิจที่ 4: (ตัวแปรภาษาC++)</h4></div>
-            <div class="lesson-item" onclick="updateContent(4)"><h4>ภารกิจที่ 5: (ความรู้เรื่องระบบIOT)</h4></div>
+            <div class="sidebar-header">MISSIONS LOG</div>
+            <div class="lesson-item" onclick="updateContent(0)"><h4>📡 ภารกิจที่ 1: ติดตั้ง Windows 10</h4></div>
+            <div class="lesson-item" onclick="updateContent(1)"><h4>🛠️ ภารกิจที่ 2: ดูแลรักษาเครื่องคอมพิวเตอร์</h4></div>
+            <div class="lesson-item" onclick="updateContent(2)"><h4>💻 ภารกิจที่ 3: ภาษาC++และการเขียนโปรแกรมเบื้องต้น</h4></div>
+            <div class="lesson-item" onclick="updateContent(3)"><h4>🛡️ ภารกิจที่ 4: ป้องกันไวรัสและภัยคุกคาม</h4></div>
+            <div class="lesson-item" onclick="updateContent(4)"><h4>💡 ภารกิจที่ 5: ระบบ IoT</h4></div>
         </div>
     </main>
         
     <script>
-        // ส่วนที่ 2: คลังเนื้อหา (เปลี่ยนจากข้อความเป็นลิงก์เว็บไซต์)
+        const pilotCardHTML = `
+            <div class="pilot-card">
+                <div class="scan-line"></div>
+                <div class="pilot-icon">👨‍🚀</div>
+                <div class="pilot-label">CURRENT PILOT</div>
+                <div class="pilot-name-display">{NAME}</div>
+                
+                <div class="xp-container">
+                    <div class="xp-label">
+                        <span>LEVEL 1</span>
+                        <span>450 / 1000 XP</span>
+                    </div>
+                    <div class="xp-track">
+                        <div class="xp-fill"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top:20px; font-size:12px; color:#888;">
+                    STATUS: <span style="color:#0f0;">ONLINE</span><br>
+                    RANK: CADET
+                </div>
+            </div>
+        `;
+
         const myData = [
             {
-                title: "การติดตั้ง Windows 10",
-                content: `
-                    <p>เรียนรู้วิธีการติดตั้งระบบปฏิบัติการจากแหล่งข้อมูลอย่างเป็นทางการของ Microsoft โดยละเอียด</p>
+                title: "บทที่ 1: การติดตั้ง Windows 10",
+                desc: `
+                    <p>เรียนรู้วิธีการติดตั้งระบบปฏิบัติการ Windows 10 แบบ Step-by-Step</p>
+                    <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
+                    <ul>
+                        <li>การดาวน์โหลดไฟล์ ISO แท้จาก Microsoft</li>
+                        <li>การทำ Bootable USB Drive</li>
+                        <li>การแบ่ง Partition ฮาร์ดดิสก์</li>
+                    </ul>
                     <a href="https://it-caspersky.co.th/blog/windows/windows-10/install-windows10/" target="_blank" 
-                       style="display: inline-block; padding: 15px 25px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 15px var(--primary);">
-                       🌐 เข้าสู่หน้าดาวน์โหลดและวิธีติดตั้ง
+                       style="display: inline-block; padding: 15px 30px; background: var(--primary); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px var(--primary);">
+                       🚀 คลิกเพื่อดูวิธีการติดตั้ง
                     </a>
                 `
             },
             {
-                title: "การดูแลรักษาเครื่องคอมพิวเตอร์",
-                content: `
-                    <p>เทคนิคการดูแลรักษา Hardware และ Software ให้คอมพิวเตอร์ของคุณทำงานได้เหมือนใหม่เสมอ</p>
-                    <a href="https://www.hp.com/th-th/shop/tech-takes/post/10-%E0%B9%80%E0%B8%84%E0%B8%A5%E0%B9%87%E0%B8%94%E0%B8%A5%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9A%E0%B8%B3%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%A3%E0%B8%B1%E0%B8%81%E0%B8%A9%E0%B8%B2%E0%B8%84%E0%B8%AD%E0%B8%A1%E0%B8%9E%E0%B8%B4%E0%B8%A7%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C" target="_blank" 
-                       style="display: inline-block; padding: 15px 25px; background: #28a745; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 15px #28a745;">
-                       📖 อ่านคู่มือการบำรุงรักษาเครื่องคอม
+                title: "บทที่ 2: การดูแลรักษาคอมพิวเตอร์",
+                desc: `
+                    <p>เทคนิคการยืดอายุการใช้งานให้นานที่สุดและทำงานเร็วเหมือนใหม่</p>
+                    <br><strong>🎯 หัวข้อสำคัญ:</strong>
+                    <ul>
+                        <li>การทำความสะอาด Hardware</li>
+                        <li>การจัดการ Disk Cleanup และ Defrag</li>
+                        <li>การป้องกันไวรัสและมัลแวร์</li>
+                    </ul>
+                    <a href="https://www.hp.com/th-th/shop/tech-takes/post/10-เคล็ดลับการบำรุงรักษาคอมพิวเตอร์" target="_blank" 
+                       style="display: inline-block; padding: 15px 30px; background: #28a745; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #28a745;">
+                       🛠️ เปิดคู่มือซ่อมบำรุง
                     </a>
                 `
             },
             {
-                title: "พื้นฐานการเขียนโปรแกรม",
-                content: `
-                    <p>เริ่มต้นเรียนรู้ตรรกะและโครงสร้างภาษาโปรแกรมมิ่งพื้นฐานผ่านเว็บไซต์ W3Schools</p>
-                    <a href="https://sites.google.com/view/kruitim/%E0%B8%A1-1-%E0%B8%A7%E0%B8%8A%E0%B8%B2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B9%82%E0%B8%99%E0%B9%82%E0%B8%A5%E0%B8%A2%E0%B8%AF-%E0%B8%A7%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%84%E0%B8%B3%E0%B8%99%E0%B8%A7%E0%B8%93/%E0%B8%AB%E0%B8%99%E0%B8%A7%E0%B8%A2%E0%B8%97-2-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%AD%E0%B8%AD%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%82%E0%B8%A2%E0%B8%99%E0%B9%82%E0%B8%9B%E0%B8%A3%E0%B9%81%E0%B8%81%E0%B8%A3%E0%B8%A1%E0%B9%80%E0%B8%9A%E0%B8%AD%E0%B8%87%E0%B8%95%E0%B8%99" target="_blank" 
-                       style="display: inline-block; padding: 15px 25px; background: #2196F3; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 15px #2196F3;">
-                       💻 เริ่มต้นเรียนเขียนโปรแกรม
-                    </a>
-                `
-            },
-            {
-                title: "ตัวแปรและโครงสร้างภาษา C++",
-                content: `
-                    <p>เจาะลึกการใช้ตัวแปร (Variables) และตัวดำเนินการในภาษา C++ จากแหล่งอ้างอิงมาตรฐาน</p>
+                title: "บทที่ 3: ตัวแปรและภาษา C++ และ พื้นฐานการเขียนโปรแกรม",
+                desc: `
+                    <p>ก้าวแรกสู่การเป็น Developer เรียนรู้ตรรกะแบบ Computational Thinking</p>
+                    <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
+                    <ul>
+                        <li>Algorithm และ Flowchart คืออะไร?</li>
+                        <li>การแก้ปัญหาอย่างเป็นระบบ</li>
+                        <li>โครงสร้างภาษาโปรแกรมเบื้องต้น</li>
+                    </ul>
                     <a href="https://marcuscode.com/lang/c/variables-and-types" target="_blank" 
-                       style="display: inline-block; padding: 15px 25px; background: #e91e63; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 15px #e91e63;">
-                       🔍 ตัวแปรพื้นฐานภาษา C++
+                       style="display: inline-block; padding: 15px 30px; background: #2196F3; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #2196F3;">
+                       💻 คลิกเพื่อดูการเขียนโปรแกรมและภาษาC++
                     </a>
                 `
             },
             {
-                title: "ความรู้เรื่องระบบ IoT",
-                content: `
-                    <p>ทำความเข้าใจนวัตกรรม Internet of Things และการนำไปใช้งานในโลกแห่งความจริง</p>
+                title: "บทที่ 4: เกราะป้องกันไวรัสและภัยคุกคาม (System Security)",
+                desc: `
+                    <p>อันตรายมีอยู่ทุกที่ในโลกไซเบอร์! ไวรัสและมัลแวร์เปรียบเสมือนเอเลี่ยนที่จ้องจะทำลายยานของคุณ เรียนรู้วิธีเปิดเกราะป้องกันและกำจัดพวกมัน</p>
+                    <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
+                    <ul>
+                        <li>วิธีใช้งาน Windows Defender (แอนตี้ไวรัสที่มีติดเครื่อง)</li>
+                        <li>การสแกนไวรัสใน Flash Drive ก่อนเปิดใช้งาน</li>
+                        <li>รู้จัก Ransomware (ไวรัสเรียกค่าไถ่) และวิธีป้องกัน</li>
+                    </ul>
+                    <a href="https://www.snc.co.th/Article/Detail/111223/10-%E0%B8%A7%E0%B8%B4%E0%B8%98%E0%B8%B5%E0%B9%83%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3-%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%A7%E0%B8%A3%E0%B8%B1%E0%B8%AA-%E0%B8%94%E0%B9%89%E0%B8%A2%E0%B8%95%E0%B8%B1%E0%B8%A7%E0%B9%80%E0%B8%AD%E0%B8%87-%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%87%E0%B9%88%E0%B8%B2%E0%B8%A2%E0%B9%86" target="_blank" 
+                       style="display: inline-block; padding: 15px 30px; background: #ff4444; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #ff4444;">
+                       🛡️ คลิกเพื้อดูวิธีป้องกันไวรัส
+                    </a>
+                `
+            },
+            {
+                title: "ภารกิจที่ 5: ความรู้เรื่องระบบ IoT",
+                desc: `
+                    <p>Internet of Things (IoT) การเชื่อมต่ออุปกรณ์สู่โลกอินเทอร์เน็ต</p>
+                    <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
+                    <ul>
+                        <li>Concept ของ Smart Home</li>
+                        <li>เซนเซอร์และการส่งข้อมูลผ่าน Cloud</li>
+                        <li>การประยุกต์ใช้จริง</li>
+                    </ul>
                     <a href="https://aws.amazon.com/th/what-is/iot/" target="_blank" 
-                       style="display: inline-block; padding: 15px 25px; background: #ff9800; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 15px #ff9800;">
-                       💡 เรียนรู้เรื่อง IoT เบื้องต้น
+                       style="display: inline-block; padding: 15px 30px; background: #ff9800; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #ff9800;">
+                       💡 คลิกเพื่ออ่านความรู้ระบบIoTเบื้องต้น
                     </a>
                 `
             }
         ];
+
+        const currentPilotName = localStorage.getItem('currentPilot') || "GUEST";
+
         function updateContent(index) {
-            document.getElementById('mTitle').innerText = myData[index].title;
-            document.getElementById('mBody').innerHTML = myData[index].content;
+            const mTitle = document.getElementById('mTitle');
+            const mBody = document.getElementById('mBody');
+
+            let cardWithRealName = pilotCardHTML.replace("{NAME}", currentPilotName);
+
+            let fullHTML = `
+                <div class="mission-grid">
+                    <div class="mission-desc">${myData[index].desc}</div>
+                    <div class="right-panel">${cardWithRealName}</div>
+                </div>
+            `;
+
+            mTitle.innerText = myData[index].title;
+            mBody.innerHTML = fullHTML;
             
-            // เปลี่ยนสีปุ่มที่ถูกเลือก
+            mBody.classList.remove('animate-content');
+            void mBody.offsetWidth; 
+            mBody.classList.add('animate-content');
+
             const items = document.querySelectorAll('.lesson-item');
             items.forEach(item => item.classList.remove('active'));
             items[index].classList.add('active');
         }
 
-        document.getElementById('pName').innerText = "PILOT: " + (localStorage.getItem('currentPilot') || "GUEST");
+        function logout() {
+            if(confirm("ยืนยันการออกจากระบบ?")) {
+                localStorage.removeItem('currentPilot'); 
+                window.location.href = 'index.html'; 
+            }
+        }
+
+        document.getElementById('pName').innerText = "PILOT: " + currentPilotName;
         
     </script>
 </body>
