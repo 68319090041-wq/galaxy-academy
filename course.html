@@ -8,26 +8,18 @@
         :root { --primary: #7b2ff7; --secondary: #00d4ff; --bg: #02010a; }
 
         body { 
-            margin: 0; 
-            font-family: 'Kanit', sans-serif; 
-            background: var(--bg); 
-            color: white; 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden;
-            cursor: crosshair; 
+            margin: 0; font-family: 'Kanit', sans-serif; background: var(--bg); color: white; 
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden; cursor: crosshair; 
         }
 
-        a, button, .lesson-item { cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="%2300d4ff" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="%237b2ff7"/></svg>') 12 12, pointer; }
+        a, button, .lesson-item, .choice-btn { cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="%2300d4ff" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="%237b2ff7"/></svg>') 12 12, pointer; }
 
         /* --- 1. Background --- */
         .course-deco-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0));
-            background-size: 200px 200px;
-            animation: twinkle-effect 4s ease-in-out infinite; opacity: 0.5;
+            background-size: 200px 200px; animation: twinkle-effect 4s ease-in-out infinite; opacity: 0.5;
         }
         @keyframes twinkle-effect { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
 
@@ -37,46 +29,28 @@
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
 
-        /* --- 3. Animation Fade In --- */
+        /* --- 3. Animation --- */
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-content { animation: slideUp 0.6s ease-out; }
 
         /* --- 4. Layout & Content --- */
         .mission-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start; }
-        
         .mission-desc ul { list-style: none; padding: 0; }
         .mission-desc ul li { margin-bottom: 10px; padding-left: 25px; position: relative; color: #bbb; }
         .mission-desc ul li::before { content: '►'; position: absolute; left: 0; color: var(--secondary); }
 
-        /* --- ฝั่งขวา (PILOT CARD + XP BAR) --- */
+        /* --- Pilot Card --- */
         .pilot-card {
-            position: relative;
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 15px;
-            padding: 30px 20px;
-            text-align: center;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
-            backdrop-filter: blur(5px);
+            position: relative; background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px; padding: 30px 20px; text-align: center; overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1); backdrop-filter: blur(5px);
         }
-
-        /* --- แก้ไขส่วนเส้น Scan Line ให้เป็นสีขาวและอยู่ด้านบน --- */
         .scan-line {
             position: absolute; top: 0; left: 0; width: 100%; height: 5px;
-            background: rgba(255, 255, 255, 0.8); /* เปลี่ยนเป็นสีขาว */
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* เงาสีขาว */
-            animation: scanMove 3s linear infinite; 
-            opacity: 0.8;
-            z-index: 5; /* สั่งให้ลอยอยู่เหนือรูปคน */
-            pointer-events: none; /* เพื่อไม่ให้บังการคลิก (เผื่อมีปุ่ม) */
+            background: rgba(255, 255, 255, 0.8); box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            animation: scanMove 3s linear infinite; opacity: 0.8; z-index: 5; pointer-events: none;
         }
-        @keyframes scanMove {
-            0% { top: -10%; opacity: 0; }
-            15% { opacity: 1; }
-            85% { opacity: 1; }
-            100% { top: 110%; opacity: 0; }
-        }
+        @keyframes scanMove { 0% { top: -10%; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
 
         .pilot-icon { font-size: 60px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--primary)); animation: floatIcon 3s ease-in-out infinite; position: relative; z-index: 1; }
         @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -88,19 +62,17 @@
         .xp-label { font-size: 10px; color: #ddd; display: flex; justify-content: space-between; margin-bottom: 5px; font-family: 'Orbitron'; }
         .xp-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
         .xp-fill {
-            height: 100%; width: 45%; 
+            height: 100%; width: 0%; 
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             box-shadow: 0 0 10px var(--secondary);
-            animation: pulseBar 2s infinite alternate;
+            transition: width 0.5s ease;
         }
-        @keyframes pulseBar { from { opacity: 0.8; } to { opacity: 1; box-shadow: 0 0 15px var(--secondary); } }
 
         /* --- Header & Layout --- */
         header { padding: 15px 30px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
         .logo { font-family: 'Orbitron'; font-weight: bold; font-size: 20px; color: var(--secondary); letter-spacing: 2px; }
         
         main { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; z-index: 10; }
-        
         .content-panel { flex: 2.5; background: rgba(15, 15, 35, 0.9); border-radius: 20px; border: 1px solid var(--primary); padding: 35px; overflow-y: auto; }
         h1 { color: var(--secondary); border-left: 5px solid var(--primary); padding-left: 15px; transition: 0.3s; }
         .inner-content { line-height: 1.8; color: #ddd; font-size: 17px; }
@@ -114,11 +86,43 @@
         .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff4444; color: #ff4444; padding: 5px 15px; border-radius: 5px; margin-left: 15px; font-family: 'Orbitron'; font-size: 12px; transition: 0.3s; }
         .logout-btn:hover { background: #ff4444; color: white; box-shadow: 0 0 10px #ff4444; }
 
+        /* --- ✨ Modal สำหรับ Quiz --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 999;
+        }
+        .quiz-box {
+            background: #0b0b15; border: 2px solid var(--secondary); border-radius: 15px;
+            padding: 30px; width: 550px; max-width: 90%;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.2); text-align: center;
+            position: relative; animation: slideUp 0.4s;
+        }
+        .quiz-header { font-family: 'Orbitron'; color: var(--secondary); font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .quiz-question { font-size: 19px; margin-bottom: 25px; color: white; font-weight: bold; }
+        .choice-btn {
+            display: block; width: 100%; padding: 12px; margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid #555; color: #ddd;
+            border-radius: 8px; text-align: left; transition: 0.2s; font-size: 16px; position: relative;
+        }
+        .choice-btn:hover { background: var(--primary); border-color: var(--primary); color: white; padding-left: 20px; }
+        .close-quiz { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #666; transition: 0.3s; }
+        .close-quiz:hover { color: #ff4444; transform: scale(1.2); }
+
     </style>
 </head>
 <body>
     
     <div class="course-deco-layer"><div class="star-layer"></div></div>
+
+    <div id="quizModal" class="modal-overlay">
+        <div class="quiz-box">
+            <span class="close-quiz" onclick="closeQuiz()">×</span>
+            <div class="quiz-header">📝 SYSTEM CHALLENGE</div>
+            <div id="quizQuestion" class="quiz-question">Loading...</div>
+            <div id="quizChoices"></div>
+        </div>
+    </div>
 
     <header>
         <div class="logo">🚀 GALAXY ACADEMY</div>
@@ -147,12 +151,20 @@
             <div class="lesson-item" onclick="updateContent(1)"><h4>🛠️ บทที่ 2: ดูแลรักษาเครื่องคอมพิวเตอร์</h4></div>
             <div class="lesson-item" onclick="updateContent(2)"><h4>💻 บทที่ 3: ภาษาC++และการเขียนโปรแกรมเบื้องต้น</h4></div>
             <div class="lesson-item" onclick="updateContent(3)"><h4>🛡️ บทที่ 4: ป้องกันไวรัสและภัยคุกคาม</h4></div>
-            <div class="lesson-item" onclick="updateContent(4)"><h4>💡 ภารกิจที่ 5: ระบบ IoT</h4></div>
+            <div class="lesson-item" onclick="updateContent(4)"><h4>💡 บทที่ 5: ระบบ IoT</h4></div>
         </div>
     </main>
         
     <script>
-        const pilotCardHTML = `
+        // --- 1. จัดการข้อมูลนักบิน (XP & Level จริง) ---
+        const currentPilotName = localStorage.getItem('currentPilot') || "GUEST";
+        let myLevel = parseInt(localStorage.getItem('myLevel')) || 1;
+        let myXP = parseInt(localStorage.getItem('myXP')) || 0;
+        const maxXP = 500; // XP เต็มหลอดต่อเลเวล
+        let currentMissionIndex = -1; 
+
+        // --- 2. HTML Template การ์ดนักบิน ---
+        const pilotCardTemplate = `
             <div class="pilot-card">
                 <div class="scan-line"></div>
                 <div class="pilot-icon">👨‍🚀</div>
@@ -161,13 +173,18 @@
                 
                 <div class="xp-container">
                     <div class="xp-label">
-                        <span>LEVEL 1</span>
-                        <span>450 / 1000 XP</span>
+                        <span>LEVEL {LEVEL}</span>
+                        <span>{XP} / {MAX_XP} XP</span>
                     </div>
                     <div class="xp-track">
-                        <div class="xp-fill"></div>
+                        <div class="xp-fill" style="width: {PERCENT}%"></div>
                     </div>
                 </div>
+
+                <button onclick="startQuiz()" 
+                    style="width:100%; margin-top:15px; padding:12px; background: linear-gradient(90deg, #7b2ff7, #00d4ff); border:none; color:white; border-radius:5px; font-family:'Orbitron'; font-weight:bold; cursor:pointer; box-shadow: 0 0 10px rgba(123, 47, 247, 0.5); transition:0.3s;">
+                    🧠 ทำแบบทดสอบรับ XP (+50)
+                </button>
                 
                 <div style="margin-top:20px; font-size:12px; color:#888;">
                     STATUS: <span style="color:#0f0;">ONLINE</span><br>
@@ -176,114 +193,189 @@
             </div>
         `;
 
+        // --- 3. ข้อมูลเนื้อหา + ข้อสอบ (บทละ 5 ข้อ รวม 25 ข้อ) ---
         const myData = [
             {
                 title: "บทที่ 1: การติดตั้ง Windows 10",
                 desc: `
                     <p>เรียนรู้วิธีการติดตั้งระบบปฏิบัติการ Windows 10 แบบ Step-by-Step</p>
                     <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
-                    <ul>
-                        <li>การดาวน์โหลดไฟล์ ISO แท้จาก Microsoft</li>
-                        <li>การทำ Bootable USB Drive</li>
-                        <li>การแบ่ง Partition ฮาร์ดดิสก์</li>
-                    </ul>
-                    <a href="https://it-caspersky.co.th/blog/windows/windows-10/install-windows10/" target="_blank" 
-                       style="display: inline-block; padding: 15px 30px; background: var(--primary); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px var(--primary);">
-                       🚀 คลิกเพื่อดูวิธีการติดตั้ง
-                    </a>
-                `
+                    <ul><li>การดาวน์โหลดไฟล์ ISO แท้จาก Microsoft</li><li>การทำ Bootable USB Drive</li><li>การแบ่ง Partition ฮาร์ดดิสก์</li></ul>
+                    <a href="https://it-caspersky.co.th/blog/windows/windows-10/install-windows10/" target="_blank" style="display: inline-block; padding: 15px 30px; background: var(--primary); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px var(--primary);">🚀 คลิกเพื่อดูวิธีการติดตั้ง</a>
+                `,
+                questions: [
+                    { q: "ไฟล์นามสกุลใดที่ใช้สำหรับสร้างตัวติดตั้ง Windows (Image File)?", choices: ["A. .EXE", "B. .ISO", "C. .DOCX", "D. .MP4"], correct: 1 },
+                    { q: "อุปกรณ์ใดจำเป็นที่สุดในการทำ Bootable Windows?", choices: ["A. หูฟัง", "B. USB Flash Drive (8GB+)", "C. เครื่องพิมพ์", "D. จอยเกม"], correct: 1 },
+                    { q: "ปกติแล้วปุ่มลัดเพื่อเข้า BIOS คือปุ่มใด?", choices: ["A. Spacebar", "B. F2 หรือ Delete", "C. Ctrl + Alt + Del", "D. Enter"], correct: 1 },
+                    { q: "ก่อนการลง Windows ใหม่ สิ่งสำคัญที่สุดที่ควรทำคือ?", choices: ["A. เปลี่ยนเมาส์", "B. สำรองข้อมูลสำคัญ (Backup)", "C. ซื้อจอใหม่", "D. สมัครอีเมลใหม่"], correct: 1 },
+                    { q: "Partition ของฮาร์ดดิสก์คืออะไร?", choices: ["A. การแบ่งพื้นที่จัดเก็บข้อมูล", "B. ยี่ห้อของ Windows", "C. โปรแกรมแอนตี้ไวรัส", "D. สายเชื่อมต่อจอภาพ"], correct: 0 }
+                ]
             },
             {
                 title: "บทที่ 2: การดูแลรักษาคอมพิวเตอร์",
                 desc: `
                     <p>เทคนิคการยืดอายุการใช้งานให้นานที่สุดและทำงานเร็วเหมือนใหม่</p>
                     <br><strong>🎯 หัวข้อสำคัญ:</strong>
-                    <ul>
-                        <li>การทำความสะอาด Hardware</li>
-                        <li>การจัดการ Disk Cleanup และ Defrag</li>
-                        <li>การป้องกันไวรัสและมัลแวร์</li>
-                    </ul>
-                    <a href="https://www.hp.com/th-th/shop/tech-takes/post/10-เคล็ดลับการบำรุงรักษาคอมพิวเตอร์" target="_blank" 
-                       style="display: inline-block; padding: 15px 30px; background: #28a745; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #28a745;">
-                       🛠️ เปิดคู่มือซ่อมบำรุง
-                    </a>
-                `
+                    <ul><li>การทำความสะอาด Hardware</li><li>การจัดการ Disk Cleanup และ Defrag</li><li>การป้องกันไวรัสและมัลแวร์</li></ul>
+                    <a href="https://www.hp.com/th-th/shop/tech-takes/post/10-เคล็ดลับการบำรุงรักษาคอมพิวเตอร์" target="_blank" style="display: inline-block; padding: 15px 30px; background: #28a745; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #28a745;">🛠️ เปิดคู่มือซ่อมบำรุง</a>
+                `,
+                questions: [
+                    { q: "Disk Cleanup มีประโยชน์อย่างไร?", choices: ["A. ลบไฟล์ขยะที่ไม่จำเป็น", "B. ทำให้เน็ตเร็วขึ้น", "C. สแกนไวรัส", "D. เพิ่มแรม"], correct: 0 },
+                    { q: "ทำไมเราควรเป่าฝุ่นออกจากเคสคอมพิวเตอร์?", choices: ["A. เพื่อความสวยงาม", "B. ป้องกันความร้อนสะสม", "C. ให้เสียงเงียบลง", "D. เพิ่มพื้นที่ฮาร์ดดิสก์"], correct: 1 },
+                    { q: "หากน้ำหกใส่คีย์บอร์ด สิ่งแรกที่ควรทำคือ?", choices: ["A. เอาไดร์เป่าผมเป่าทันที", "B. ถอดปลั๊กทันที", "C. เขย่าแรงๆ", "D. ใช้งานต่อจนกว่าจะแห้ง"], correct: 1 },
+                    { q: "Defragment (Defrag) ช่วยในเรื่องใด?", choices: ["A. ล้างไวรัส", "B. จัดเรียงข้อมูลให้เป็นระเบียบ", "C. เพิ่มขนาดหน้าจอ", "D. เปลี่ยนธีม Windows"], correct: 1 },
+                    { q: "ซิลิโคน (Thermal Paste) ทาไประหว่าง CPU กับอะไร?", choices: ["A. แรม (RAM)", "B. พัดลมระบายความร้อน (Heatsink)", "C. การ์ดจอ", "D. แหล่งจ่ายไฟ (PSU)"], correct: 1 }
+                ]
             },
             {
-                title: "บทที่ 3: ตัวแปรและภาษา C++ และ พื้นฐานการเขียนโปรแกรม",
+                title: "บทที่ 3: ตัวแปรและภาษา C++",
                 desc: `
                     <p>ก้าวแรกสู่การเป็น Developer เรียนรู้ตรรกะแบบ Computational Thinking</p>
                     <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
-                    <ul>
-                        <li>Algorithm และ Flowchart คืออะไร?</li>
-                        <li>การแก้ปัญหาอย่างเป็นระบบ</li>
-                        <li>โครงสร้างภาษาโปรแกรมเบื้องต้น</li>
-                    </ul>
-                    <a href="https://marcuscode.com/lang/c/variables-and-types" target="_blank" 
-                       style="display: inline-block; padding: 15px 30px; background: #2196F3; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #2196F3;">
-                       💻 คลิกเพื่อดูการเขียนโปรแกรมและภาษาC++
-                    </a>
-                `
+                    <ul><li>Algorithm และ Flowchart คืออะไร?</li><li>การแก้ปัญหาอย่างเป็นระบบ</li><li>โครงสร้างภาษาโปรแกรมเบื้องต้น</li></ul>
+                    <a href="https://marcuscode.com/lang/c/variables-and-types" target="_blank" style="display: inline-block; padding: 15px 30px; background: #2196F3; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #2196F3;">💻 คลิกเพื่อดูการเขียนโปรแกรม</a>
+                `,
+                questions: [
+                    { q: "สัญลักษณ์ใดใช้จบคำสั่งในภาษา C++?", choices: ["A. : (Colon)", "B. ; (Semicolon)", "C. . (Dot)", "D. # (Hash)"], correct: 1 },
+                    { q: "ตัวแปรชนิด int เก็บข้อมูลประเภทใด?", choices: ["A. จำนวนเต็ม", "B. ทศนิยม", "C. ข้อความ", "D. ค่าความจริง"], correct: 0 },
+                    { q: "คำสั่ง cout << ... ใช้ทำอะไร?", choices: ["A. รับค่าจากคีย์บอร์ด", "B. แสดงผลออกทางหน้าจอ", "C. จบโปรแกรม", "D. วนซ้ำ"], correct: 1 },
+                    { q: "การตั้งชื่อตัวแปรที่ถูกต้องคือข้อใด?", choices: ["A. 1number", "B. my name", "C. my_score", "D. int"], correct: 2 },
+                    { q: "ใน Flowchart สัญลักษณ์สี่เหลี่ยมข้าวหลามตัด (Decision) หมายถึง?", choices: ["A. จุดเริ่มต้น", "B. การประมวลผล", "C. การตัดสินใจ/เงื่อนไข", "D. แสดงผล"], correct: 2 }
+                ]
             },
             {
-                title: "บทที่ 4: เกราะป้องกันไวรัสและภัยคุกคาม (System Security)",
+                title: "บทที่ 4: เกราะป้องกันไวรัสและภัยคุกคาม",
                 desc: `
-                    <p>อันตรายมีอยู่ทุกที่ในโลกไซเบอร์! ไวรัสและมัลแวร์เปรียบเสมือนเอเลี่ยนที่จ้องจะทำลายยานของคุณ เรียนรู้วิธีเปิดเกราะป้องกันและกำจัดพวกมัน</p>
+                    <p>อันตรายมีอยู่ทุกที่ในโลกไซเบอร์! เรียนรู้วิธีเปิดเกราะป้องกันและกำจัดพวกมัน</p>
                     <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
-                    <ul>
-                        <li>วิธีใช้งาน Windows Defender (แอนตี้ไวรัสที่มีติดเครื่อง)</li>
-                        <li>การสแกนไวรัสใน Flash Drive ก่อนเปิดใช้งาน</li>
-                        <li>รู้จัก Ransomware (ไวรัสเรียกค่าไถ่) และวิธีป้องกัน</li>
-                    </ul>
-                    <a href="https://www.snc.co.th/Article/Detail/111223/10-%E0%B8%A7%E0%B8%B4%E0%B8%98%E0%B8%B5%E0%B9%83%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3-%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%A7%E0%B8%A3%E0%B8%B1%E0%B8%AA-%E0%B8%94%E0%B9%89%E0%B8%A2%E0%B8%95%E0%B8%B1%E0%B8%A7%E0%B9%80%E0%B8%AD%E0%B8%87-%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%87%E0%B9%88%E0%B8%B2%E0%B8%A2%E0%B9%86" target="_blank" 
-                       style="display: inline-block; padding: 15px 30px; background: #ff4444; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #ff4444;">
-                       🛡️ คลิกเพื้อดูวิธีป้องกันไวรัส
-                    </a>
-                `
+                    <ul><li>วิธีใช้งาน Windows Defender</li><li>การสแกนไวรัสใน Flash Drive</li><li>รู้จัก Ransomware และวิธีป้องกัน</li></ul>
+                    <a href="https://www.snc.co.th/Article/Detail/111223/10-%E0%B8%A7%E0%B8%B4%E0%B8%98%E0%B8%B5%E0%B9%83%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3-%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%A7%E0%B8%A3%E0%B8%B1%E0%B8%AA-%E0%B8%94%E0%B9%89%E0%B8%A2%E0%B8%95%E0%B8%B1%E0%B8%A7%E0%B9%80%E0%B8%AD%E0%B8%87-%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%87%E0%B9%88%E0%B8%B2%E0%B8%A2%E0%B9%86" target="_blank" style="display: inline-block; padding: 15px 30px; background: #ff4444; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #ff4444;">🛡️ คลิกเพื่อดูวิธีป้องกันไวรัส</a>
+                `,
+                questions: [
+                    { q: "Ransomware คืออะไร?", choices: ["A. โปรแกรมแต่งรูป", "B. ไวรัสเรียกค่าไถ่ข้อมูล", "C. อุปกรณ์ฮาร์ดแวร์", "D. เว็บไซต์ขายของ"], correct: 1 },
+                    { q: "Windows Defender คืออะไร?", choices: ["A. เกมวางแผน", "B. โปรแกรมแอนตี้ไวรัสของ Microsoft", "C. ชื่อรุ่น Windows", "D. ยี่ห้อคอมพิวเตอร์"], correct: 1 },
+                    { q: "Phishing (ฟิชชิ่ง) คือรูปแบบการโจมตีแบบใด?", choices: ["A. การตกปลาออนไลน์", "B. การสร้างเว็บ/อีเมลปลอมหลอกเอาข้อมูล", "C. การทำให้เครื่องช้าลง", "D. การตัดสัญญาณเน็ต"], correct: 1 },
+                    { q: "รหัสผ่านที่ปลอดภัยควรเป็นอย่างไร?", choices: ["A. 12345678", "B. วันเดือนปีเกิด", "C. ชื่อเล่นตัวเอง", "D. ผสมตัวอักษรเล็กใหญ่ ตัวเลข และสัญลักษณ์"], correct: 3 },
+                    { q: "ทำไมเราต้องอัปเดต Windows สม่ำเสมอ?", choices: ["A. เพื่อความสวยงาม", "B. อุดช่องโหว่ความปลอดภัย", "C. ทำให้กินไฟน้อยลง", "D. เพิ่มเสียงลำโพง"], correct: 1 }
+                ]
             },
             {
-                title: "ภารกิจที่ 5: ความรู้เรื่องระบบ IoT",
+                title: "บทที่ 5: ความรู้เรื่องระบบ IoT",
                 desc: `
                     <p>Internet of Things (IoT) การเชื่อมต่ออุปกรณ์สู่โลกอินเทอร์เน็ต</p>
                     <br><strong>🎯 สิ่งที่จะได้เรียนรู้:</strong>
-                    <ul>
-                        <li>Concept ของ Smart Home</li>
-                        <li>เซนเซอร์และการส่งข้อมูลผ่าน Cloud</li>
-                        <li>การประยุกต์ใช้จริง</li>
-                    </ul>
-                    <a href="https://aws.amazon.com/th/what-is/iot/" target="_blank" 
-                       style="display: inline-block; padding: 15px 30px; background: #ff9800; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #ff9800;">
-                       💡 คลิกเพื่ออ่านความรู้ระบบIoTเบื้องต้น
-                    </a>
-                `
+                    <ul><li>Concept ของ Smart Home</li><li>เซนเซอร์และการส่งข้อมูลผ่าน Cloud</li><li>การประยุกต์ใช้จริง</li></ul>
+                    <a href="https://aws.amazon.com/th/what-is/iot/" target="_blank" style="display: inline-block; padding: 15px 30px; background: #ff9800; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 0 20px #ff9800;">💡 คลิกเพื่ออ่านความรู้ IoT</a>
+                `,
+                questions: [
+                    { q: "IoT ย่อมาจากคำว่าอะไร?", choices: ["A. Internet of Thailand", "B. Internet of Things", "C. Input of Technology", "D. Internal of Time"], correct: 1 },
+                    { q: "อุปกรณ์ใดเปรียบเสมือนสมองของระบบ IoT?", choices: ["A. Microcontroller", "B. Monitor", "C. Mouse", "D. Printer"], correct: 0 },
+                    { q: "ข้อใดคือตัวอย่างของ Smart Home?", choices: ["A. การใช้ไม้กวาด", "B. หลอดไฟที่สั่งเปิดปิดผ่านมือถือได้", "C. โทรทัศน์จอแบน", "D. พัดลมตั้งโต๊ะทั่วไป"], correct: 1 },
+                    { q: "เซนเซอร์ (Sensor) ในระบบ IoT ทำหน้าที่อะไร?", choices: ["A. ประมวลผล", "B. ตรวจจับค่าต่างๆ (เช่น อุณหภูมิ, แสง)", "C. เก็บข้อมูล", "D. จ่ายไฟ"], correct: 1 },
+                    { q: "Cloud Computing เกี่ยวข้องกับ IoT อย่างไร?", choices: ["A. ใช้เป็นที่เก็บและประมวลผลข้อมูล", "B. ทำให้เครื่องหนักขึ้น", "C. ใช้บังแดดให้อุปกรณ์", "D. ไม่เกี่ยวข้องกันเลย"], correct: 0 }
+                ]
             }
         ];
 
-        const currentPilotName = localStorage.getItem('currentPilot') || "GUEST";
-
+        // --- 4. ฟังก์ชันแสดงเนื้อหาหลัก ---
         function updateContent(index) {
+            currentMissionIndex = index; // จำไว้ว่าอยู่บทไหน
             const mTitle = document.getElementById('mTitle');
             const mBody = document.getElementById('mBody');
 
-            let cardWithRealName = pilotCardHTML.replace("{NAME}", currentPilotName);
+            // คำนวณ % XP
+            let percent = (myXP / maxXP) * 100;
+
+            // แทนค่าข้อมูลลงในการ์ด (XP จริง)
+            let cardWithRealData = pilotCardTemplate
+                .replace("{NAME}", currentPilotName)
+                .replace("{LEVEL}", myLevel)
+                .replace("{XP}", myXP)
+                .replace("{MAX_XP}", maxXP)
+                .replace("{PERCENT}", percent);
 
             let fullHTML = `
                 <div class="mission-grid">
                     <div class="mission-desc">${myData[index].desc}</div>
-                    <div class="right-panel">${cardWithRealName}</div>
+                    <div class="right-panel">${cardWithRealData}</div>
                 </div>
             `;
 
             mTitle.innerText = myData[index].title;
             mBody.innerHTML = fullHTML;
             
+            // Animation
             mBody.classList.remove('animate-content');
             void mBody.offsetWidth; 
             mBody.classList.add('animate-content');
 
+            // Active Menu Style
             const items = document.querySelectorAll('.lesson-item');
             items.forEach(item => item.classList.remove('active'));
             items[index].classList.add('active');
+        }
+
+        // --- 5. ระบบ Quiz & XP Logic ---
+        function startQuiz() {
+            if(currentMissionIndex === -1) return;
+
+            // สุ่มคำถาม 1 ข้อ จาก 5 ข้อที่มีในบทนั้น
+            const pool = myData[currentMissionIndex].questions;
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            const questionData = pool[randomIndex];
+
+            // เปิด Modal
+            const modal = document.getElementById('quizModal');
+            const qTitle = document.getElementById('quizQuestion');
+            const cBox = document.getElementById('quizChoices');
+
+            qTitle.innerText = questionData.q;
+            cBox.innerHTML = ""; // เคลียร์ปุ่มเก่า
+
+            // สร้างปุ่มตัวเลือก
+            questionData.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.innerText = choice;
+                btn.className = 'choice-btn';
+                btn.onclick = () => checkAnswer(index, questionData.correct);
+                cBox.appendChild(btn);
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                // ตอบถูก
+                closeQuiz();
+                addXP();
+            } else {
+                // ตอบผิด
+                alert("⛔ ACCESS DENIED! \nคำตอบไม่ถูกต้อง ระบบไม่สามารถให้ XP ได้ กรุณาลองใหม่อีกครั้ง");
+            }
+        }
+
+        function addXP() {
+            myXP += 50; 
+            let msg = "✅ ภารกิจสำเร็จ! ได้รับ +50 XP";
+
+            // เช็คเลเวลอัพ
+            if (myXP >= maxXP) {
+                myLevel++;
+                myXP = 0; // รีเซ็ตหลอด
+                msg = `🎉 LEVEL UP!! \nยินดีด้วย คุณเลื่อนยศเป็น Level ${myLevel} แล้ว!`;
+            }
+
+            alert(msg);
+            
+            // บันทึกและรีโหลดหน้าจอเพื่ออัพเดทหลอด
+            localStorage.setItem('myLevel', myLevel);
+            localStorage.setItem('myXP', myXP);
+            updateContent(currentMissionIndex); 
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').style.display = 'none';
         }
 
         function logout() {
